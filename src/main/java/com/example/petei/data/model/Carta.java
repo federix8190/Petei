@@ -1,14 +1,11 @@
-package com.example.petei.ui.login;
+package com.example.petei.data.model;
 
 public class Carta {
 
     private int imgId;
 
-    public Carta() {
-    }
-
-    public Carta(int imgId) {
-        this.imgId = imgId;
+    public Carta(int img) {
+        this.imgId = img;
     }
 
     public int getImgId() {

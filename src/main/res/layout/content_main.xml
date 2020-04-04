@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_weight="10">
+            android:layout_weight="15">
 
             <TextView
                 android:layout_width="match_parent"
@@ -26,12 +26,80 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_weight="25">
+            android:orientation="horizontal"
+            android:layout_weight="20">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Mazo"/>
+            <RelativeLayout
+                android:id="@+id/mazoLayout"
+                android:layout_weight="40"
+                android:layout_width="0dip"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_height="?android:attr/listPreferredItemHeightLarge"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:id="@+id/mazoView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:contentDescription="Icon" />
+
+                <ImageView
+                    android:id="@+id/sacarView"
+                    android:layout_toEndOf="@id/mazoView"
+                    android:layout_toRightOf="@id/mazoView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:contentDescription="Icon" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/cartaActualLayout"
+                android:layout_weight="35"
+                android:layout_width="0dip"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_height="?android:attr/listPreferredItemHeightLarge"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:id="@+id/cartaActualView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:contentDescription="Icon" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/colorActualLayout"
+                android:layout_weight="25"
+                android:layout_width="0dip"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_height="?android:attr/listPreferredItemHeightLarge"
+                android:background="@drawable/border">
+
+                <View
+                    android:id="@+id/colorActualView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_diamond" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 

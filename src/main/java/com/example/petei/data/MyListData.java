@@ -2,23 +2,32 @@ package com.example.petei.data;
 
 public class MyListData {
 
-    private String description;
-    private int imgId;
+    private int imgId1;
+    private int imgId2;
 
-    public MyListData(String description, int imgId) {
-        this.description = description;
-        this.imgId = imgId;
+    public MyListData(int imgId1) {
+        this.imgId1 = imgId1;
+        this.imgId2 = -1;
     }
-    public String getDescription() {
-        return description;
+
+    public MyListData(int imgId1, int imgId2) {
+        this.imgId1 = imgId1;
+        this.imgId2 = imgId2;
     }
-    public void setDescription(String description) {
-        this.description = description;
+
+    public int getImgId1() {
+        return imgId1;
     }
-    public int getImgId() {
-        return imgId;
+
+    public void setImgId1(int imgId1) {
+        this.imgId1 = imgId1;
     }
-    public void setImgId(int imgId) {
-        this.imgId = imgId;
+
+    public int getImgId2() {
+        return imgId2;
+    }
+
+    public void setImgId2(int imgId2) {
+        this.imgId2 = imgId2;
     }
 }

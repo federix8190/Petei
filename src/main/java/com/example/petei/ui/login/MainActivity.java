@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 //import android.support.v7.widget.RecyclerView;
 
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.petei.R;
 
@@ -23,7 +25,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView listaPlanesView;
+    private RecyclerView recyclerView;
+    List<Carta> cartas = new ArrayList<Carta>();
+    final List<MyListData> myListData = new ArrayList<MyListData>();
+    MyListAdapter adapter;
+    ImageView mazoView;
+    ImageView cartaActualView;
+    View colorActualView;
+    ImageView sacarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,54 +42,178 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        MyListData[] myListData = new MyListData[] {
-                new MyListData("Email", R.mipmap.cero_rojo),
-                new MyListData("Info", android.R.drawable.ic_dialog_info),
-                new MyListData("Delete", android.R.drawable.ic_delete),
-                new MyListData("Dialer", android.R.drawable.ic_dialog_dialer),
-                new MyListData("Alert", android.R.drawable.ic_dialog_alert),
-                new MyListData("Map", android.R.drawable.ic_dialog_map),
-                new MyListData("Email", android.R.drawable.ic_dialog_email),
-                new MyListData("Info", android.R.drawable.ic_dialog_info),
-                new MyListData("Delete", android.R.drawable.ic_delete),
-                new MyListData("Dialer", android.R.drawable.ic_dialog_dialer),
-                new MyListData("Alert", android.R.drawable.ic_dialog_alert),
-                new MyListData("Map", android.R.drawable.ic_dialog_map),
-        };
+        mazoView = findViewById(R.id.mazoView);
+        mazoView.setImageResource(R.mipmap.carta_mazo);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.lista_cartas);
-        MyListAdapter adapter = new MyListAdapter(myListData);
+        cartaActualView = findViewById(R.id.cartaActualView);
+        cartaActualView.setImageResource(R.mipmap.amarillo_0);
+
+        colorActualView = findViewById(R.id.colorActualView);
+        //colorActualView.setImageResource(R.mipmap.rojo_6);
+
+        sacarView = findViewById(R.id.sacarView);
+        sacarView.setImageResource(R.mipmap.download);
+        sacarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                agarrar(R.mipmap.amarillo_0);
+            }
+        });
+
+        cartas.add(new Carta(R.mipmap.rojo_0));
+        cartas.add(new Carta(R.mipmap.rojo_1));
+        cartas.add(new Carta(R.mipmap.rojo_2));
+        cartas.add(new Carta(R.mipmap.rojo_3));
+        cartas.add(new Carta(R.mipmap.rojo_4));
+        cartas.add(new Carta(R.mipmap.rojo_5));
+        cartas.add(new Carta(R.mipmap.rojo_6));
+        cartas.add(new Carta(R.mipmap.rojo_7));
+        cartas.add(new Carta(R.mipmap.rojo_8));
+        //cartas.add(new Carta(R.mipmap.rojo_9));
+
+        for (int i = 0; i < cartas.size(); i = i + 2) {
+            int item1 = cartas.get(i).getImgId();
+            int item2 = -1;
+            if (i < cartas.size() - 1) {
+                item2 = cartas.get(i + 1).getImgId();
+            }
+            myListData.add(new MyListData(item1, item2));
+        }
+
+        recyclerView = (RecyclerView) findViewById(R.id.lista_cartas);
+        adapter = new MyListAdapter(myListData) {
+            @Override
+            public void onBindViewHolder(ViewHolder holder, final int position) {
+
+                holder.imageView.setImageResource(myListData.get(position).getImgId1());
+                if (myListData.get(position).getImgId2() != -1) {
+                    holder.imageView2.setImageResource(myListData.get(position).getImgId2());
+                    holder.actionView2.setImageResource(R.mipmap.upload);
+                    holder.actionView2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int aux = (position * 2) + 1;
+                            cargar(aux);
+                        }
+                    });
+                }
+
+                holder.actionView.setImageResource(R.mipmap.upload);
+                holder.actionView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cargar(position * 2);
+                    }
+                });
+            }
+        };
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
-        /*listaPlanesView = (RecyclerView) findViewById(R.id.lista_cartas);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        listaPlanesView.setLayoutManager(mLayoutManager);*/
-
-
     }
 
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        List<Carta> datos = new ArrayList<Carta>();
-        datos.add(new Carta(1, 0));
-        datos.add(new Carta(4, 1));
-        datos.add(new Carta(5, 3));
-        datos.add(new Carta(8, 0));
-        datos.add(new Carta(9, 2));
-        datos.add(new Carta(6, 1));
-        datos.add(new Carta(7, 3));
-        cargarDatos(datos);
-    }
+    private void cargar(int pos) {
 
-    /*private void cargarDatos(List<Carta> datos) {
-        AdapterCartas mAdapter = new AdapterCartas(this);
-        listaPlanesView.setAdapter(mAdapter);
-        for (Carta plan: datos) {
-            mAdapter.addItem(plan);
+        List<Carta> tmp = new ArrayList<Carta>();
+        for (Carta item : cartas) {
+            tmp.add(item);
         }
-    }*/
+        cartas.clear();
+        myListData.clear();
+        int i = 0;
+        for (Carta item : tmp) {
+            if (i != pos) {
+                cartas.add(item);
+            } else {
+                cartaActualView.setImageResource(item.getImgId());
+            }
+            i++;
+        }
+
+        for (int j = 0; j < cartas.size(); j = j + 2) {
+            int item1 = cartas.get(j).getImgId();
+            int item2 = -1;
+            if (j < cartas.size() - 1) {
+                item2 = cartas.get(j+1).getImgId();
+            }
+            myListData.add(new MyListData(item1, item2));
+        }
+
+        adapter = new MyListAdapter(myListData) {
+            @Override
+            public void onBindViewHolder(ViewHolder holder, final int position) {
+
+                holder.imageView.setImageResource(myListData.get(position).getImgId1());
+                if (myListData.get(position).getImgId2() != -1) {
+                    holder.imageView2.setImageResource(myListData.get(position).getImgId2());
+                    holder.actionView2.setImageResource(R.mipmap.upload);
+                    holder.actionView2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int aux = (position * 2) + 1;
+                            cargar(aux);
+                        }
+                    });
+                }
+
+                holder.actionView.setImageResource(R.mipmap.upload);
+                holder.actionView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cargar(position * 2);
+                    }
+                });
+            }
+        };
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        //adapter.notifyDataSetChanged();
+    }
+
+    public void agarrar(int img) {
+
+        cartas.add(new Carta(img));
+        myListData.clear();
+
+        for (int i = 0; i < cartas.size(); i = i + 2) {
+            int item1 = cartas.get(i).getImgId();
+            int item2 = -1;
+            if (i < cartas.size() - 1) {
+                item2 = cartas.get(i + 1).getImgId();
+            }
+            myListData.add(new MyListData(item1, item2));
+        }
+
+        recyclerView = (RecyclerView) findViewById(R.id.lista_cartas);
+        adapter = new MyListAdapter(myListData) {
+            @Override
+            public void onBindViewHolder(ViewHolder holder, final int position) {
+
+                holder.imageView.setImageResource(myListData.get(position).getImgId1());
+                if (myListData.get(position).getImgId2() != -1) {
+                    holder.imageView2.setImageResource(myListData.get(position).getImgId2());
+                    holder.actionView2.setImageResource(R.mipmap.upload);
+                    holder.actionView2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int aux = (position * 2) + 1;
+                            cargar(aux);
+                        }
+                    });
+                }
+                holder.actionView.setImageResource(R.mipmap.upload);
+                holder.actionView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cargar(position * 2);
+                    }
+                });
+            }
+        };
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
 
 }
